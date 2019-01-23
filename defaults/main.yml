@@ -1,0 +1,4 @@
+---
+phpfpm_pools: {}
+phpfpm_version: "7.2"
+phpfpm_ini: {}

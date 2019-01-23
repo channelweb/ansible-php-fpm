@@ -1,0 +1,55 @@
+---
+- name: update apt cache
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: install php-fpm
+  become: yes
+  apt:
+    name: 
+      - "php{{ phpfpm_version }}-bcmath"
+      - "php{{ phpfpm_version }}-bz2"
+      - "php{{ phpfpm_version }}-curl"
+      - "php{{ phpfpm_version }}-dom"
+      - "php{{ phpfpm_version }}-fpm"
+      - "php{{ phpfpm_version }}-gd"
+      - "php{{ phpfpm_version }}-intl"
+      - "php{{ phpfpm_version }}-json"
+      - "php{{ phpfpm_version }}-mbstring"
+      - "php{{ phpfpm_version }}-mysql"
+      - "php{{ phpfpm_version }}-sqlite3"
+      - "php{{ phpfpm_version }}-opcache"
+      - "php{{ phpfpm_version }}-zip"
+    state: latest
+
+- name: enable php-fpm
+  become: yes
+  service:
+    name: "php{{ phpfpm_version }}-fpm"
+    enabled: yes
+
+- name: install composer
+  become: yes
+  get_url:
+    url: https://getcomposer.org/composer.phar
+    dest: /usr/local/bin/composer
+    mode: "0777"
+  tags: composer
+
+- name: create php-fpm pools
+  become: yes
+  template:
+    src: pool.conf
+    dest: "/etc/php/{{ phpfpm_version }}/fpm/pool.d/{{ item.key }}.conf"
+  with_dict: "{{ phpfpm_pools }}"
+  notify: restart php-fpm
+
+- name: set default FPM php.ini settings 
+  become: yes
+  ini_file:
+    dest: /etc/php/{{ phpfpm_version }}/fpm/php.ini
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  loop: "{{ phpfpm_ini }}"
