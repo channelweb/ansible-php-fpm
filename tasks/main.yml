@@ -37,6 +37,13 @@
     mode: "0777"
   tags: composer
 
+- name: install hirak/prestissimo (composer)
+  composer:
+    command: require
+    arguments: hirak/prestissimo
+    prefer_dist: yes
+    global_command: yes
+
 - name: create php-fpm pools
   become: yes
   template:
