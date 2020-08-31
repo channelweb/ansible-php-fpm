@@ -18,6 +18,7 @@
       - "php{{ phpfpm_version }}-json"
       - "php{{ phpfpm_version }}-mbstring"
       - "php{{ phpfpm_version }}-mysql"
+      - "php{{ phpfpm_version }}-redis"
       - "php{{ phpfpm_version }}-sqlite3"
       - "php{{ phpfpm_version }}-opcache"
       - "php{{ phpfpm_version }}-zip"
