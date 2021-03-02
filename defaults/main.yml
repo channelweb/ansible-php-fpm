@@ -1,4 +1,5 @@
 ---
 phpfpm_pools: {}
-phpfpm_version: "7.2"
+composer_version: "1.10.20"
+phpfpm_version: "7.4"
 phpfpm_ini: {}

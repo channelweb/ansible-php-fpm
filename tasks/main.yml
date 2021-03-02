@@ -33,7 +33,7 @@
 - name: install latest stable composer
   become: yes
   get_url:
-    url: https://getcomposer.org/composer-stable.phar
+    url: "https://getcomposer.org/download/{{ composer_version }}/composer.phar"
     dest: /usr/local/bin/composer
     mode: "0777"
   tags: composer
