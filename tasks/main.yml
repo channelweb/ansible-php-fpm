@@ -7,7 +7,7 @@
 - name: install php-fpm
   become: yes
   apt:
-    name: 
+    name:
       - "php{{ phpfpm_version }}-bcmath"
       - "php{{ phpfpm_version }}-bz2"
       - "php{{ phpfpm_version }}-curl"
@@ -33,17 +33,20 @@
 - name: install latest stable composer
   become: yes
   get_url:
+    url: https://getcomposer.org/composer-stable.phar
+    dest: /usr/local/bin/composer
+    mode: "0777"
+  when: composer_version is not defined
+  tags: composer
+
+- name: install specific stable composer version
+  become: yes
+  get_url:
     url: "https://getcomposer.org/download/{{ composer_version }}/composer.phar"
     dest: /usr/local/bin/composer
     mode: "0777"
+  when: composer_version is defined
   tags: composer
-
-- name: install hirak/prestissimo (composer)
-  composer:
-    command: require
-    arguments: hirak/prestissimo
-    prefer_dist: yes
-    global_command: yes
 
 - name: create php-fpm pools
   become: yes
@@ -53,7 +56,7 @@
   with_dict: "{{ phpfpm_pools }}"
   notify: restart php-fpm
 
-- name: set default FPM php.ini settings 
+- name: set default FPM php.ini settings
   become: yes
   ini_file:
     dest: /etc/php/{{ phpfpm_version }}/fpm/php.ini

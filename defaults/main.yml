@@ -1,5 +1,8 @@
 ---
 phpfpm_pools: {}
-composer_version: "1.10.20"
 phpfpm_version: "7.4"
 phpfpm_ini: {}
+
+# Uncomment and define "composer_version"
+# if you need to use a specific version
+#composer_version: "1.10.20"
